@@ -9,6 +9,15 @@ public:
     virtual void setVolume(int) = 0;
 };
 
+class RemoteControl {
+public:
+    RemoteControl(Device *device) : _device(device) {}
+    virtual void togglePower() = 0;
+    virtual void volumeUp() = 0;
+    virtual void volumeDown() = 0;
+protected:    
+    Device *_device;
+};
 
 class TV : public Device {
 public:
@@ -34,17 +43,6 @@ public:
 private:
     int _volume;
     bool _enabled;
-};
-
-
-class RemoteControl {
-public:
-    RemoteControl(Device *device) : _device(device) {}
-    virtual void togglePower() = 0;
-    virtual void volumeUp() = 0;
-    virtual void volumeDown() = 0;
-protected:    
-    Device *_device;
 };
 
 class AdvancedRemoteControl : public RemoteControl {
@@ -73,6 +71,13 @@ int main() {
     std::cout << "radio is now " << radio.isEnabled() << std::endl;
     remote.togglePower();
     std::cout << "radio is now " << radio.isEnabled() << std::endl;
+
+    remote = &tv;
+    remote.volumeDown();
+    std::cout << "tv's volume now is " << tv.getVolume() << std::endl;
+
+    remote.mute();
+    std::cout << "tv's volume now is " << tv.getVolume() << std::endl;
 
     return 0;
 }
